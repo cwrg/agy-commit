@@ -1,0 +1,89 @@
+{
+  "name": "agy-commit",
+  "displayName": "AGY Commit",
+  "description": "Antigravity生成提交信息",
+  "version": "0.6.5",
+  "publisher": "cwrg",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cwrg/agy-commit.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "SCM Providers",
+    "Other"
+  ],
+  "icon": "icon.png",
+  "main": "./extension.js",
+  "activationEvents": [
+    "onCommand:agyCommit.generate",
+    "onCommand:agyCommit.busy"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "agyCommit.generate",
+        "title": "生成提交信息",
+        "category": "AGY Commit",
+        "icon": "$(sparkle)",
+        "enablement": "config.git.enabled && !git.missing && !agyCommit.busy"
+      },
+      {
+        "command": "agyCommit.busy",
+        "title": "正在生成…",
+        "category": "AGY Commit",
+        "icon": "$(sync~spin)"
+      }
+    ],
+    "menus": {
+      "scm/title": [
+        {
+          "command": "agyCommit.generate",
+          "when": "scmProvider == git && !agyCommit.busy",
+          "group": "navigation@9"
+        },
+        {
+          "command": "agyCommit.busy",
+          "when": "scmProvider == git && agyCommit.busy",
+          "group": "navigation@9"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "agyCommit.generate",
+          "when": "config.git.enabled && !git.missing"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "agyCommit.generate",
+        "key": "cmd+alt+g",
+        "mac": "cmd+alt+g",
+        "when": "config.git.enabled && !git.missing"
+      }
+    ],
+    "configuration": {
+      "title": "AGY Commit",
+      "properties": {
+        "agyCommit.commitMessageLanguage": {
+          "type": "string",
+          "default": "zh_CN",
+          "enum": [
+            "zh_CN",
+            "en"
+          ],
+          "enumItemLabels": [
+            "简体中文",
+            "English"
+          ],
+          "scope": "application",
+          "description": "提交信息使用的语言"
+        }
+      }
+    }
+  }
+}
